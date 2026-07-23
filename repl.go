@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Alexare8/pokedexcli/internal/pokeapi"
 )
 
-func startRepl() {
+func startRepl(conf *config) {
 	scanner := bufio.NewScanner(os.Stdin)
-	conf := config{}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -22,7 +23,7 @@ func startRepl() {
 		commands := getCommands()
 		command, exists := commands[words[0]]
 		if exists {
-			err := command.callback(&conf)
+			err := command.callback(conf)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -44,6 +45,12 @@ type cliCommand struct {
 	name        string
 	description string
 	callback    func(*config) error
+}
+
+type config struct {
+	pokeapiClient pokeapi.Client
+	Next          *string
+	Previous      *string
 }
 
 func getCommands() map[string]cliCommand {
