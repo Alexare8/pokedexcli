@@ -48,9 +48,9 @@ type cliCommand struct {
 }
 
 type config struct {
-	pokeapiClient pokeapi.Client
-	Next          *string
-	Previous      *string
+	pokeapiClient    pokeapi.Client
+	nextLocationsURL *string
+	prevLocationsURL *string
 }
 
 func getCommands() map[string]cliCommand {

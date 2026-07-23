@@ -5,13 +5,13 @@ import (
 )
 
 func commandMap(conf *config) error {
-	response, err := conf.pokeapiClient.ListLocations(conf.Next)
+	response, err := conf.pokeapiClient.ListLocations(conf.nextLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	conf.Previous = response.Previous
-	conf.Next = response.Next
+	conf.prevLocationsURL = response.Previous
+	conf.nextLocationsURL = response.Next
 
 	for _, area := range response.Results {
 		fmt.Println(area.Name)
@@ -20,18 +20,18 @@ func commandMap(conf *config) error {
 }
 
 func commandMapBack(conf *config) error {
-	if conf.Previous == nil {
+	if conf.prevLocationsURL == nil {
 		fmt.Println("You're on the first page.")
 		return nil
 	}
 
-	response, err := conf.pokeapiClient.ListLocations(conf.Previous)
+	response, err := conf.pokeapiClient.ListLocations(conf.prevLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	conf.Previous = response.Previous
-	conf.Next = response.Next
+	conf.prevLocationsURL = response.Previous
+	conf.nextLocationsURL = response.Next
 
 	for _, area := range response.Results {
 		fmt.Println(area.Name)
